@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-import sequelize from "../../../config/db/dbConfig.js";
+import sequelize from "../../../config/db/DBConfig.js";
 
 const User = sequelize.define(
     "user",
