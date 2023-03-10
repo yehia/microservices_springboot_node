@@ -1,6 +1,6 @@
 package br.com.sales.productapi.modules.products.controller;
 
-import br.com.sales.productapi.modules.categories.dto.CategoryResponse;
+import br.com.sales.productapi.config.helpers.SuccessResponse;
 import br.com.sales.productapi.modules.products.dto.ProductRequest;
 import br.com.sales.productapi.modules.products.dto.ProductResponse;
 import br.com.sales.productapi.modules.products.service.ProductService;
@@ -36,13 +36,23 @@ public class ProductController {
         return this.productService.findByName(name);
     }
 
-    @GetMapping("supplier/{id}")
-    public List<ProductResponse> findBySupplierId(@PathVariable Integer id) {
-        return this.productService.findBySupplierId(id);
+    @GetMapping("supplier/{supplierId}")
+    public List<ProductResponse> findBySupplierId(@PathVariable Integer supplierId) {
+        return this.productService.findBySupplierId(supplierId);
     }
 
-    @GetMapping("category/{id}")
-    public List<ProductResponse> findByCategoryId(@PathVariable Integer id) {
-        return this.productService.findByCategoryId(id);
+    @GetMapping("category/{categoryId}")
+    public List<ProductResponse> findByCategoryId(@PathVariable Integer categoryId) {
+        return this.productService.findByCategoryId(categoryId);
+    }
+
+    @PutMapping("{id}")
+    public ProductResponse update(@RequestBody ProductRequest request, @PathVariable Integer id) {
+        return this.productService.update(request, id);
+    }
+
+    @DeleteMapping("{id}")
+    public SuccessResponse delete(@PathVariable Integer id) {
+        return this.productService.delete(id);
     }
 }

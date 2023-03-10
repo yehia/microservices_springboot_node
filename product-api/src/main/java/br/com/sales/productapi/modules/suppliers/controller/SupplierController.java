@@ -1,7 +1,6 @@
 package br.com.sales.productapi.modules.suppliers.controller;
 
-import br.com.sales.productapi.modules.categories.dto.CategoryRequest;
-import br.com.sales.productapi.modules.categories.dto.CategoryResponse;
+import br.com.sales.productapi.config.helpers.SuccessResponse;
 import br.com.sales.productapi.modules.suppliers.dto.SupplierRequest;
 import br.com.sales.productapi.modules.suppliers.dto.SupplierResponse;
 import br.com.sales.productapi.modules.suppliers.service.SupplierService;
@@ -35,5 +34,15 @@ public class SupplierController {
     @GetMapping("name/{name}")
     public List<SupplierResponse> findByName(@PathVariable String name) {
         return this.supplierService.findByName(name);
+    }
+
+    @PutMapping("{id}")
+    public SupplierResponse update(@RequestBody SupplierRequest request, @PathVariable Integer id) {
+        return this.supplierService.update(request, id);
+    }
+
+    @DeleteMapping("{id}")
+    public SuccessResponse delete(@PathVariable Integer id) {
+        return this.supplierService.delete(id);
     }
 }

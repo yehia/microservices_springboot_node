@@ -1,6 +1,7 @@
 package br.com.sales.productapi.modules.products.service;
 
 import br.com.sales.productapi.config.exception.ValidationException;
+import br.com.sales.productapi.config.helpers.SuccessResponse;
 import br.com.sales.productapi.modules.categories.service.CategoryService;
 import br.com.sales.productapi.modules.products.dto.ProductRequest;
 import br.com.sales.productapi.modules.products.dto.ProductResponse;
@@ -57,19 +58,49 @@ public class ProductService {
     }
 
     public Product findById(Integer id) {
-        if(isEmpty(id)) {
-            throw new ValidationException("The Product's ID must be informed.");
-        }
+        this.validateInformedId(id);
         return this.productRepository.findById(id).orElseThrow(() -> new ValidationException("There's no Product for the given ID."));
     }
 
+    public Boolean existsByCategoryId(Integer categoryId) {
+        return this.productRepository.existsByCategoryId(categoryId);
+    }
+
+    public Boolean existsBySupplierId(Integer supplierId) {
+        return this.productRepository.existsBySupplierId(supplierId);
+    }
+
     public ProductResponse save(ProductRequest request) {
-        validateProductDataInformed(request);
-        validateCategoryAndSupplierInformed(request);
+        this.validateProductDataInformed(request);
+        this.validateCategoryAndSupplierInformed(request);
         var category = this.categoryService.findById(request.getCategoryId());
         var supplier = this.supplierService.findById(request.getSupplierId());
         var product = this.productRepository.save(Product.of(request, category, supplier));
         return ProductResponse.of(product);
+    }
+
+    public ProductResponse update(ProductRequest request, Integer id) {
+        this.validateProductDataInformed(request);
+        this.validateInformedId(id);
+        this.validateCategoryAndSupplierInformed(request);
+        var category = this.categoryService.findById(request.getCategoryId());
+        var supplier = this.supplierService.findById(request.getSupplierId());
+        var product = Product.of(request, category, supplier);
+        product.setId(id);
+        this.productRepository.save(product);
+        return ProductResponse.of(product);
+    }
+
+    public SuccessResponse delete(Integer id) {
+        this.validateInformedId(id);
+        this.productRepository.deleteById(id);
+        return SuccessResponse.create("The Product was deleted.");
+    }
+
+    private void validateInformedId(Integer id) {
+        if(isEmpty(id)) {
+            throw new ValidationException("The Product's ID must be informed.");
+        }
     }
 
     private void validateProductDataInformed(ProductRequest request) {
