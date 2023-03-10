@@ -21,6 +21,7 @@ public class ProductResponse {
 
     private Integer id;
     private String name;
+    @JsonProperty("quantity_available")
     private Integer quantityAvailable;
     private CategoryResponse category;
     private SupplierResponse supplier;
