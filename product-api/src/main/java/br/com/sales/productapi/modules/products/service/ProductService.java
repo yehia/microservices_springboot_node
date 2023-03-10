@@ -38,6 +38,20 @@ public class ProductService {
         return this.productRepository.findByNameIgnoreCaseContaining(name).stream().map(ProductResponse::of).collect(Collectors.toList());
     }
 
+    public List<ProductResponse> findBySupplierId(Integer supplierId) {
+        if(isEmpty(supplierId)) {
+            throw new ValidationException("The Products's Supplier ID must be informed");
+        }
+        return this.productRepository.findBySupplierId(supplierId).stream().map(ProductResponse::of).collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> findByCategoryId(Integer categoryId) {
+        if(isEmpty(categoryId)) {
+            throw new ValidationException("The Products's Category ID must be informed");
+        }
+        return this.productRepository.findByCategoryId(categoryId).stream().map(ProductResponse::of).collect(Collectors.toList());
+    }
+
     public ProductResponse findByIdResponse(Integer id) {
         return ProductResponse.of(this.findById(id));
     }

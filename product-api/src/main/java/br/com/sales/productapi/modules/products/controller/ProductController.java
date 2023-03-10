@@ -35,4 +35,14 @@ public class ProductController {
     public List<ProductResponse> findByName(@PathVariable String name) {
         return this.productService.findByName(name);
     }
+
+    @GetMapping("supplier/{id}")
+    public List<ProductResponse> findBySupplierId(@PathVariable Integer id) {
+        return this.productService.findBySupplierId(id);
+    }
+
+    @GetMapping("category/{id}")
+    public List<ProductResponse> findByCategoryId(@PathVariable Integer id) {
+        return this.productService.findByCategoryId(id);
+    }
 }
