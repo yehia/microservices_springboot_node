@@ -11,6 +11,9 @@ import br.com.sales.productapi.modules.suppliers.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
@@ -19,7 +22,25 @@ public class SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
 
+    public List<SupplierResponse> findAll() {
+        return this.supplierRepository.findAll().stream().map(SupplierResponse::of).collect(Collectors.toList());
+    }
+
+    public List<SupplierResponse> findByName(String name) {
+        if(isEmpty(name)) {
+            throw new ValidationException("The Supplier's name must be informed");
+        }
+        return this.supplierRepository.findByNameIgnoreCaseContaining(name).stream().map(SupplierResponse::of).collect(Collectors.toList());
+    }
+
+    public SupplierResponse findByIdResponse(Integer id) {
+        return SupplierResponse.of(this.findById(id));
+    }
+
     public Supplier findById(Integer id) {
+        if(isEmpty(id)) {
+            throw new ValidationException("The Supplier's ID was not informed");
+        }
         return this.supplierRepository.findById(id).orElseThrow(() -> new ValidationException("There's no Supplier for the given ID"));
     }
 

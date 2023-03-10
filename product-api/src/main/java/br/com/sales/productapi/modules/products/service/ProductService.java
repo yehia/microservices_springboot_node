@@ -10,6 +10,9 @@ import br.com.sales.productapi.modules.suppliers.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
@@ -23,6 +26,28 @@ public class ProductService {
     private CategoryService categoryService;
     @Autowired
     private SupplierService supplierService;
+
+    public List<ProductResponse> findAll() {
+        return this.productRepository.findAll().stream().map(ProductResponse::of).collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> findByName(String name) {
+        if(isEmpty(name)) {
+            throw new ValidationException("The Product's name must be informed");
+        }
+        return this.productRepository.findByNameIgnoreCaseContaining(name).stream().map(ProductResponse::of).collect(Collectors.toList());
+    }
+
+    public ProductResponse findByIdResponse(Integer id) {
+        return ProductResponse.of(this.findById(id));
+    }
+
+    public Product findById(Integer id) {
+        if(isEmpty(id)) {
+            throw new ValidationException("The Product's ID must be informed.");
+        }
+        return this.productRepository.findById(id).orElseThrow(() -> new ValidationException("There's no Product for the given ID."));
+    }
 
     public ProductResponse save(ProductRequest request) {
         validateProductDataInformed(request);
