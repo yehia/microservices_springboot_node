@@ -5,6 +5,7 @@ import br.com.sales.productapi.config.helpers.SuccessResponse;
 import br.com.sales.productapi.modules.categories.service.CategoryService;
 import br.com.sales.productapi.modules.products.dto.ProductRequest;
 import br.com.sales.productapi.modules.products.dto.ProductResponse;
+import br.com.sales.productapi.modules.products.dto.ProductStockDTO;
 import br.com.sales.productapi.modules.products.model.Product;
 import br.com.sales.productapi.modules.products.repository.ProductRepository;
 import br.com.sales.productapi.modules.suppliers.service.SupplierService;
@@ -126,4 +127,6 @@ public class ProductService {
             throw  new ValidationException("The Supplier's id was not informed.");
         }
     }
+
+    public void updateProductStock(ProductStockDTO productStockDTO) {}
 }

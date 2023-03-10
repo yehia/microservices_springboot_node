@@ -42,7 +42,7 @@ app-config:
     exchange:
       product: product.topic
 
-    rountingKey:
+    routingKey:
       product-stock: product-stock-update.routingKey
       sales-confirmation: sales-confirmation.routingKey
 
